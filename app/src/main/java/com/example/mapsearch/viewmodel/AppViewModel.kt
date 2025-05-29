@@ -25,7 +25,7 @@ class AppViewModel : ViewModel() {
         try {
             _loadingState.value = LoadingUIState.Loading
             val response = GeocodingApi.retrofitService.getSuggestions(query)
-
+            if(query.isEmpty()) _suggestions.value = emptyList()
             _suggestions.value = response.items.map { it }
             _loadingState.value = LoadingUIState.Success
         } catch (e: Exception) {
