@@ -77,20 +77,22 @@ fun AddressSearchScreen(
                     query = it
                 }
             )
-            LazyColumn {
-                items(suggestions.size) { index ->
-                    LocationItem(
-                        modifier = Modifier.fillMaxWidth(),
-                        placeItem = suggestions[index],
-                        keyword = query,
-                        onDirectionClick = {
-                            appViewModel.openGoogleMap(
-                                context = context,
-                                latitude = suggestions[index].position?.lat ?: 0.0,
-                                longitude = suggestions[index].position?.lng ?: 0.0
-                            )
-                        }
-                    )
+            if (query.isNotEmpty()) {
+                LazyColumn {
+                    items(suggestions.size) { index ->
+                        LocationItem(
+                            modifier = Modifier.fillMaxWidth(),
+                            placeItem = suggestions[index],
+                            keyword = query,
+                            onDirectionClick = {
+                                appViewModel.openGoogleMap(
+                                    context = context,
+                                    latitude = suggestions[index].position?.lat ?: 0.0,
+                                    longitude = suggestions[index].position?.lng ?: 0.0
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -105,10 +107,13 @@ fun MapSearchBar(
 ) {
     var value by remember { mutableStateOf("") }
     Box(
-        Modifier.height(60.dp).shadow(5.dp, shape = RoundedCornerShape(100.dp))
+        Modifier
+            .height(60.dp)
+            .shadow(5.dp, shape = RoundedCornerShape(100.dp))
     ) {
         OutlinedTextField(
-            modifier = modifier.fillMaxSize()
+            modifier = modifier
+                .fillMaxSize()
                 .background(color = Color.White),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.Transparent,
